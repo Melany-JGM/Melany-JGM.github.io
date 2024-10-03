@@ -1,28 +1,27 @@
-let currentIndex = {
-    carouselModern: 0,
-    carouselAntiguo: 0
-};
-
+// Función para manejar el cambio de secciones (Mundo Moderno y Mundo Antiguo)
 function showSection(sectionId) {
-    document.querySelectorAll('.carousel-section').forEach(section => {
+    const sections = document.querySelectorAll('.carousel-section');
+    sections.forEach(section => {
         section.classList.add('hidden');
     });
     document.getElementById(sectionId).classList.remove('hidden');
 }
 
+// Función para manejar el movimiento del carrusel
+let slideIndex = 0;
+
 function moveSlide(carouselId, direction) {
     const carousel = document.getElementById(carouselId);
-    const items = carousel.querySelectorAll('img').length;
-    const itemWidth = carousel.querySelector('img').offsetWidth + 10; // Ancho más márgenes
-    currentIndex[carouselId] += direction;
+    const slides = carousel.getElementsByTagName('img');
+    const totalSlides = slides.length;
 
-    if (currentIndex[carouselId] < 0) {
-        currentIndex[carouselId] = items - 1;
-    } else if (currentIndex[carouselId] >= items) {
-        currentIndex[carouselId] = 0;
+    slideIndex += direction;
+    if (slideIndex < 0) {
+        slideIndex = totalSlides - 1;
+    } else if (slideIndex >= totalSlides) {
+        slideIndex = 0;
     }
 
-    const translateX = -currentIndex[carouselId] * itemWidth;
-    carousel.style.transform = `translateX(${translateX}px)`;
+    const slideWidth = slides[0].clientWidth + 10; // Ancho de la imagen + margen
+    carousel.style.transform = 'translateX(${-slideIndex * slideWidth}px)';
 }
-
